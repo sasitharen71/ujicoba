@@ -1064,14 +1064,7 @@
                             <input type="text" id="newEmployeeName" placeholder="Nama Karyawan">
                             <select id="newEmployeeDept">
                                 <option value="">Pilih Departemen</option>
-                                <option value="Produksi">Produksi</option>
-                                <option value="Quality Control">Quality Control</option>
-                                <option value="Warehouse">Warehouse</option>
-                                <option value="Engineering">Engineering</option>
-                                <option value="HRD">HRD</option>
-                                <option value="Finance">Finance</option>
-                                <option value="IT">IT</option>
-                                <option value="Marketing">Marketing</option>
+                                <option value="Sosmed">Sosmed</option>
                             </select>
                         </div>
                         <button class="btn btn-secondary" onclick="addEmployee()">
@@ -1084,9 +1077,6 @@
                         <label><i class="fas fa-toilet"></i> Keperluan</label>
                         <select id="purpose">
                             <option value="Izin Toilet">🚻 Izin Toilet</option>
-                            <option value="Izin Sholat">🕌 Izin Sholat</option>
-                            <option value="Izin Minum">🥤 Izin Minum</option>
-                            <option value="Izin Lainnya">📋 Izin Lainnya</option>
                         </select>
                     </div>
 
@@ -1183,39 +1173,21 @@
     <!-- Notification Toast -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <script>
+     <script>
         // ============================================
         // SISTEM IZIN KELUAR KARYAWAN
-        // With localStorage Persistence
+        // Main Application Logic
         // ============================================
 
-        // --- STORAGE KEYS ---
-        var STORAGE_KEYS = {
-            employees: 'izinKeluar_employees',
-            activeTimers: 'izinKeluar_activeTimers',
-            history: 'izinKeluar_history',
-            nextId: 'izinKeluar_nextId',
-            nextPermitId: 'izinKeluar_nextPermitId',
-            savedDate: 'izinKeluar_savedDate'
-        };
-
-        // --- DEFAULT EMPLOYEES ---
-        var DEFAULT_EMPLOYEES = [
-            { id: 1, name: 'Ahmad Fauzi', dept: 'Produksi' },
-            { id: 2, name: 'Siti Nurhaliza', dept: 'Quality Control' },
-            { id: 3, name: 'Budi Santoso', dept: 'Warehouse' },
-            { id: 4, name: 'Dewi Lestari', dept: 'Engineering' },
-            { id: 5, name: 'Rizky Pratama', dept: 'HRD' },
-            { id: 6, name: 'Putri Ayu', dept: 'Finance' },
-            { id: 7, name: 'Hendra Wijaya', dept: 'IT' },
-            { id: 8, name: 'Rina Marlina', dept: 'Marketing' },
-            { id: 9, name: 'Agus Setiawan', dept: 'Produksi' },
-            { id: 10, name: 'Maya Sari', dept: 'Quality Control' },
-        ];
-
         // --- DATA STORE ---
-        var AppState = {
-            employees: [],
+        const AppState = {
+            employees: [
+                { id: 1, name: 'PUPUT MUSTIKA ( X1198595 )', dept: 'Sosmed' },
+                { id: 2, name: 'SANTHIA RAHENA ( X1665045 )', dept: 'Sosmed' },
+                { id: 3, name: 'NADILA SARI ( E1985238 )', dept: 'Sosmed' },
+                { id: 4, name: 'BAYU PRAJAYA ( C9442938 )', dept: 'Sosmed' },
+                { id: 5, name: 'AHMAD ALIMUL HUDA ( E5008952 )', dept: 'Sosmed' },
+            ],
             activeTimers: [],
             history: [],
             nextId: 11,
