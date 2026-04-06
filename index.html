@@ -9,6 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        /* ============================================
+           SISTEM IZIN KELUAR KARYAWAN
+           Theme: Doraemon Animated Background
+           ============================================ */
+
         * {
             margin: 0;
             padding: 0;
@@ -43,6 +48,9 @@
             position: relative;
         }
 
+        /* ============================================
+           ANIMATED BACKGROUND
+           ============================================ */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -149,6 +157,9 @@
             50% { transform: translateY(-20px); }
         }
 
+        /* ============================================
+           MAIN CONTAINER
+           ============================================ */
         .main-container {
             position: relative;
             z-index: 5;
@@ -158,6 +169,9 @@
             min-height: 100vh;
         }
 
+        /* ============================================
+           HEADER
+           ============================================ */
         .header {
             display: flex;
             justify-content: space-between;
@@ -246,6 +260,9 @@
             gap: 6px;
         }
 
+        /* ============================================
+           STATS SECTION
+           ============================================ */
         .stats-section {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -327,6 +344,9 @@
             margin-top: 4px;
         }
 
+        /* ============================================
+           PANELS (Glass Cards)
+           ============================================ */
         .panel {
             background: var(--dark-card);
             backdrop-filter: blur(20px);
@@ -363,6 +383,9 @@
             gap: 8px;
         }
 
+        /* ============================================
+           CONTENT GRID
+           ============================================ */
         .content-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -370,6 +393,9 @@
             margin-bottom: 24px;
         }
 
+        /* ============================================
+           FORM STYLES
+           ============================================ */
         .form-group { margin-bottom: 20px; }
 
         .form-group label {
@@ -570,6 +596,9 @@
             box-shadow: 0 4px 15px rgba(0, 153, 229, 0.4);
         }
 
+        /* ============================================
+           BUTTONS
+           ============================================ */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -645,6 +674,9 @@
             box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
         }
 
+        /* ============================================
+           ACTIVE TIMERS
+           ============================================ */
         .active-timers {
             display: flex;
             flex-direction: column;
@@ -775,6 +807,9 @@
 
         .empty-state span { font-size: 0.8rem; opacity: 0.6; }
 
+        /* ============================================
+           HISTORY TABLE
+           ============================================ */
         .history-panel { margin-bottom: 24px; }
 
         .table-responsive { overflow-x: auto; padding: 0; }
@@ -839,6 +874,9 @@
         .table-empty p { font-size: 0.9rem; }
         .empty-row td { border: none !important; }
 
+        /* ============================================
+           FOOTER
+           ============================================ */
         .footer {
             text-align: center;
             padding: 20px;
@@ -847,6 +885,9 @@
             opacity: 0.6;
         }
 
+        /* ============================================
+           TOAST NOTIFICATIONS
+           ============================================ */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -921,6 +962,9 @@
 
         .toast-close:hover { color: white; }
 
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 1024px) {
             .stats-section { grid-template-columns: repeat(2, 1fr); }
             .content-grid { grid-template-columns: 1fr; }
@@ -1088,7 +1132,7 @@
 
                     <!-- Duration -->
                     <div class="form-group">
-                        <label><i class="fas fa-hourglass-half"></i> Durasi (Menit)</label>
+                        <label><i clas"fas fa-hourglass-half"></i> Durasi (Menit)</label>
                         <div class="duration-selector">
                             <button class="dur-btn active" data-dur="5">5</button>
                             <button class="dur-btn" data-dur="10">10</button>
@@ -1166,19 +1210,27 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>🔔 Sistem Izin Keluar Karyawan &copy; 2026 | Powered by Doraemon Timer ⏱️</p>
+            <p>🔔 Sistem Izin Keluar Karyawan 2026 | Powered by Doraemon Timer ⏱️</p>
         </footer>
     </div>
 
     <!-- Notification Toast -->
     <div class="toast-container" id="toastContainer"></div>
 
-     <script>
+    <script>
         // ============================================
         // SISTEM IZIN KELUAR KARYAWAN
         // Main Application Logic
         // ============================================
-
+    // --- STORAGE KEYS ---
+        var STORAGE_KEYS = {
+            employees: 'izinKeluar_employees',
+            activeTimers: 'izinKeluar_activeTimers',
+            history: 'izinKeluar_history',
+            nextId: 'izinKeluar_nextId',
+            nextPermitId: 'izinKeluar_nextPermitId',
+            savedDate: 'izinKeluar_savedDate'
+        };
         // --- DATA STORE ---
         const AppState = {
             employees: [
@@ -1194,141 +1246,22 @@
             nextPermitId: 1,
         };
 
-        // --- LOCALSTORAGE HELPERS ---
-        function saveToStorage() {
-            try {
-                // Save employees
-                localStorage.setItem(STORAGE_KEYS.employees, JSON.stringify(AppState.employees));
-
-                // Save active timers - convert Date objects to ISO strings
-                var timersToSave = AppState.activeTimers.map(function(timer) {
-                    return {
-                        id: timer.id,
-                        empId: timer.empId,
-                        empName: timer.empName,
-                        empDept: timer.empDept,
-                        purpose: timer.purpose,
-                        notes: timer.notes,
-                        durationMinutes: timer.durationMinutes,
-                        totalSeconds: timer.totalSeconds,
-                        remainingSeconds: timer.remainingSeconds,
-                        startTime: timer.startTime.toISOString(),
-                        startTimeStr: timer.startTimeStr,
-                        endTime: timer.endTime ? timer.endTime.toISOString() : null,
-                        status: timer.status,
-                    };
-                });
-                localStorage.setItem(STORAGE_KEYS.activeTimers, JSON.stringify(timersToSave));
-
-                // Save history
-                localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(AppState.history));
-
-                // Save counters
-                localStorage.setItem(STORAGE_KEYS.nextId, JSON.stringify(AppState.nextId));
-                localStorage.setItem(STORAGE_KEYS.nextPermitId, JSON.stringify(AppState.nextPermitId));
-
-                // Save today's date to detect day change
-                localStorage.setItem(STORAGE_KEYS.savedDate, new Date().toISOString().slice(0, 10));
-            } catch (e) {
-                console.warn('Failed to save to localStorage:', e);
-            }
-        }
-
-        function loadFromStorage() {
-            try {
-                // Check if saved date is today - if not, clear daily data (history & active timers)
-                var savedDate = localStorage.getItem(STORAGE_KEYS.savedDate);
-                var today = new Date().toISOString().slice(0, 10);
-                var isNewDay = savedDate !== today;
-
-                // Load employees (always persist, even across days)
-                var savedEmployees = localStorage.getItem(STORAGE_KEYS.employees);
-                if (savedEmployees) {
-                    AppState.employees = JSON.parse(savedEmployees);
-                } else {
-                    AppState.employees = JSON.parse(JSON.stringify(DEFAULT_EMPLOYEES));
-                }
-
-                // Load counters
-                var savedNextId = localStorage.getItem(STORAGE_KEYS.nextId);
-                if (savedNextId) {
-                    AppState.nextId = JSON.parse(savedNextId);
-                }
-
-                var savedNextPermitId = localStorage.getItem(STORAGE_KEYS.nextPermitId);
-                if (savedNextPermitId) {
-                    AppState.nextPermitId = JSON.parse(savedNextPermitId);
-                }
-
-                if (isNewDay) {
-                    // New day: clear daily data
-                    AppState.activeTimers = [];
-                    AppState.history = [];
-                    AppState.nextPermitId = 1;
-                    saveToStorage();
-                    return;
-                }
-
-                // Load active timers - reconstruct Date objects and recalculate remaining time
-                var savedTimers = localStorage.getItem(STORAGE_KEYS.activeTimers);
-                if (savedTimers) {
-                    var parsedTimers = JSON.parse(savedTimers);
-                    var now = new Date();
-                    AppState.activeTimers = parsedTimers.map(function(timer) {
-                        var startTime = new Date(timer.startTime);
-                        var elapsedSeconds = Math.floor((now - startTime) / 1000);
-                        var remainingSeconds = timer.totalSeconds - elapsedSeconds;
-
-                        return {
-                            id: timer.id,
-                            empId: timer.empId,
-                            empName: timer.empName,
-                            empDept: timer.empDept,
-                            purpose: timer.purpose,
-                            notes: timer.notes,
-                            durationMinutes: timer.durationMinutes,
-                            totalSeconds: timer.totalSeconds,
-                            remainingSeconds: remainingSeconds,
-                            startTime: startTime,
-                            startTimeStr: timer.startTimeStr,
-                            endTime: timer.endTime ? new Date(timer.endTime) : null,
-                            status: timer.status,
-                        };
-                    });
-                }
-
-                // Load history
-                var savedHistory = localStorage.getItem(STORAGE_KEYS.history);
-                if (savedHistory) {
-                    AppState.history = JSON.parse(savedHistory);
-                }
-            } catch (e) {
-                console.warn('Failed to load from localStorage:', e);
-                // Reset to defaults on error
-                AppState.employees = JSON.parse(JSON.stringify(DEFAULT_EMPLOYEES));
-                AppState.activeTimers = [];
-                AppState.history = [];
-                AppState.nextId = 11;
-                AppState.nextPermitId = 1;
-            }
-        }
-
         // --- CLOCK ---
         function updateClock() {
-            var now = new Date();
-            var timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            var dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             document.getElementById('liveClock').textContent = timeStr;
             document.getElementById('liveDate').textContent = dateStr;
         }
 
         // --- EMPLOYEE SEARCH & SELECT ---
-        var searchInput = document.getElementById('employeeSearch');
-        var dropdown = document.getElementById('employeeDropdown');
+        const searchInput = document.getElementById('employeeSearch');
+        const dropdown = document.getElementById('employeeDropdown');
 
         function renderDropdown(filter) {
             filter = filter || '';
-            var filtered = AppState.employees.filter(function(emp) {
+            const filtered = AppState.employees.filter(function(emp) {
                 return emp.name.toLowerCase().includes(filter.toLowerCase()) ||
                     emp.dept.toLowerCase().includes(filter.toLowerCase());
             });
@@ -1394,7 +1327,6 @@
             document.getElementById('newEmployeeName').value = '';
             document.getElementById('newEmployeeDept').value = '';
             document.getElementById('addEmployeeForm').style.display = 'none';
-            saveToStorage();
             showToast('success', 'Berhasil', 'Karyawan "' + name + '" berhasil ditambahkan!');
         }
 
@@ -1448,7 +1380,6 @@
             document.getElementById('notes').value = '';
             updateStats();
             renderActiveTimers();
-            saveToStorage();
             showToast('info', 'Timer Dimulai', emp.name + ' - ' + purpose + ' (' + duration + ' menit)');
         }
 
@@ -1528,7 +1459,6 @@
             updateStats();
             renderActiveTimers();
             renderHistory();
-            saveToStorage();
 
             if (isLate) {
                 showToast('danger', 'Terlambat!', timer.empName + ' kembali melebihi batas waktu.');
@@ -1538,7 +1468,6 @@
         }
 
         // --- TIMER TICK ---
-        var saveCounter = 0;
         function timerTick() {
             var needsAlert = false;
             AppState.activeTimers.forEach(function(timer) {
@@ -1555,15 +1484,6 @@
 
             renderActiveTimers();
             updateStats();
-
-            // Save to localStorage every 5 seconds to reduce write frequency
-            saveCounter++;
-            if (saveCounter >= 5) {
-                saveCounter = 0;
-                if (AppState.activeTimers.length > 0) {
-                    saveToStorage();
-                }
-            }
         }
 
         // --- RENDER HISTORY ---
@@ -1706,22 +1626,17 @@
                 AppState.history = [];
                 renderHistory();
                 updateStats();
-                saveToStorage();
                 showToast('info', 'Dihapus', 'Semua riwayat izin telah dihapus.');
             }
         }
 
         // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', function() {
-            // Load saved data from localStorage
-            loadFromStorage();
-
             updateClock();
             setInterval(updateClock, 1000);
             setInterval(timerTick, 1000);
             updateStats();
             renderHistory();
-            renderActiveTimers();
         });
     </script>
 </body>
