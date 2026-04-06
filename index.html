@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon">
+    <title>Sistem Izin Keluar Karyawan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0099E5;
+            --primary-dark: #0077B6;
+            --primary-light: #48CAE4;
+            --secondary: #FFFFFF;
+            --accent-yellow: #FFD700;
+            --accent-red: #E74C3C;
+            --dark: #0A1628;
+            --dark-card: rgba(255, 255, 255, 0.12);
+            --dark-card-hover: rgba(255, 255, 255, 0.18);
+            --success: #2ECC71;
+            --warning: #F39C12;
+            --danger: #E74C3C;
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0A1628 0%, #1A2744 30%, #0D3B66 60%, #0A1628 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .cloud {
+            position: absolute;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 60%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        .cloud-1 { width: 300px; height: 120px; top: 8%; left: -300px; animation: cloudMove 35s linear infinite; }
+        .cloud-2 { width: 250px; height: 100px; top: 20%; left: -250px; animation: cloudMove 45s linear infinite 5s; opacity: 0.7; }
+        .cloud-3 { width: 350px; height: 140px; top: 40%; left: -350px; animation: cloudMove 55s linear infinite 10s; opacity: 0.5; }
+        .cloud-4 { width: 200px; height: 80px; top: 60%; left: -200px; animation: cloudMove 40s linear infinite 15s; opacity: 0.6; }
+        .cloud-5 { width: 280px; height: 110px; top: 75%; left: -280px; animation: cloudMove 50s linear infinite 20s; opacity: 0.4; }
+
+        @keyframes cloudMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 400px)); }
+        }
+
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--accent-yellow), 0 0 12px var(--accent-yellow);
+            animation: twinkle 2s ease-in-out infinite alternate;
+        }
+
+        .star-1 { top: 5%; left: 10%; animation-delay: 0s; }
+        .star-2 { top: 12%; left: 30%; animation-delay: 0.3s; width: 3px; height: 3px; }
+        .star-3 { top: 8%; left: 55%; animation-delay: 0.6s; }
+        .star-4 { top: 15%; left: 75%; animation-delay: 0.9s; width: 5px; height: 5px; }
+        .star-5 { top: 25%; left: 90%; animation-delay: 1.2s; }
+        .star-6 { top: 35%; left: 15%; animation-delay: 0.4s; width: 3px; height: 3px; }
+        .star-7 { top: 50%; left: 85%; animation-delay: 0.7s; }
+        .star-8 { top: 65%; left: 45%; animation-delay: 1s; width: 3px; height: 3px; }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .doraemon-fly {
+            position: absolute;
+            top: 5%;
+            left: -200px;
+            animation: doraemonFly 30s linear infinite;
+            z-index: 1;
+        }
+
+        .doraemon-fly img {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0, 153, 229, 0.4));
+            animation: doraemonBob 2s ease-in-out infinite;
+        }
+
+        @keyframes doraemonFly {
+            0% { left: -200px; top: 5%; }
+            25% { top: 12%; }
+            50% { top: 3%; }
+            75% { top: 10%; }
+            100% { left: calc(100vw + 200px); top: 6%; }
+        }
+
+        @keyframes doraemonBob {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .doraemon-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            animation: floatUpDown 3s ease-in-out infinite;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .doraemon-float:hover { opacity: 0.8; }
+
+        .doraemon-float img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0, 153, 229, 0.3));
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 5;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-mascot {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: rgba(0, 153, 229, 0.2);
+            padding: 5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 153, 229, 0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(0, 153, 229, 0); }
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .header h1 i { -webkit-text-fill-color: var(--primary-light); }
+
+        .subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .live-clock {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-yellow);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-clock i {
+            font-size: 1.2rem;
+            animation: spin 4s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .live-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .stat-total::before { background: var(--primary); }
+        .stat-active::before { background: var(--warning); }
+        .stat-ontime::before { background: var(--success); }
+        .stat-late::before { background: var(--danger); }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .stat-total .stat-icon { background: rgba(0, 153, 229, 0.2); color: var(--primary-light); }
+        .stat-active .stat-icon { background: rgba(243, 156, 18, 0.2); color: var(--warning); }
+        .stat-ontime .stat-icon { background: rgba(46, 204, 113, 0.2); color: var(--success); }
+        .stat-late .stat-icon { background: rgba(231, 76, 60, 0.2); color: var(--danger); }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .stat-total .stat-number { color: var(--primary-light); }
+        .stat-active .stat-number { color: var(--warning); }
+        .stat-ontime .stat-number { color: var(--success); }
+        .stat-late .stat-number { color: var(--danger); }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .panel {
+            background: var(--dark-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .panel-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header h2 i { color: var(--primary-light); }
+
+        .panel-body { padding: 24px; }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-group label i {
+            color: var(--primary-light);
+            margin-right: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 153, 229, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .form-group select option {
+            background: #1A2744;
+            color: white;
+        }
+
+        .search-select { position: relative; }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(26, 39, 68, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            margin-top: 4px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .dropdown-list.show { display: block; }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .dropdown-item:hover { background: rgba(0, 153, 229, 0.2); }
+        .dropdown-item .emp-name { font-weight: 600; }
+
+        .dropdown-item .emp-dept {
+            font-size: 0.75rem;
+            color: var(--primary-light);
+            background: rgba(0, 153, 229, 0.15);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .selected-employee {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(0, 153, 229, 0.15);
+            border: 1px solid rgba(0, 153, 229, 0.3);
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        .selected-employee #selectedName {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .dept-badge {
+            font-size: 0.75rem;
+            background: rgba(0, 153, 229, 0.3);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--primary-light);
+        }
+
+        .btn-clear {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--accent-red);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            transition: transform 0.2s;
+        }
+
+        .btn-clear:hover { transform: scale(1.2); }
+
+        .add-employee-toggle { margin-bottom: 16px; }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: var(--primary-light);
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 0;
+        }
+
+        .btn-link:hover { color: var(--accent-yellow); }
+
+        .add-employee-form {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-row input,
+        .form-row select {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .form-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        .form-row select option { background: #1A2744; color: white; }
+
+        .duration-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dur-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dur-btn:hover {
+            background: rgba(0, 153, 229, 0.2);
+            border-color: var(--primary);
+        }
+
+        .dur-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 153, 229, 0.4);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 153, 229, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 153, 229, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+
+        .btn-danger {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-danger:hover { background: rgba(231, 76, 60, 0.3); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-light);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-outline:hover { background: rgba(0, 153, 229, 0.15); }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 0.78rem;
+            border-radius: 8px;
+        }
+
+        .btn-lg {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            border-radius: 14px;
+        }
+
+        .btn-success-action {
+            background: linear-gradient(135deg, var(--success), #27AE60);
+            color: white;
+            padding: 6px 16px;
+            font-size: 0.78rem;
+        }
+
+        .btn-success-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4);
+        }
+
+        .active-timers {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .active-timers::-webkit-scrollbar { width: 6px; }
+        .active-timers::-webkit-scrollbar-track { background: transparent; }
+        .active-timers::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+
+        .timer-card {
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            transition: all 0.3s;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timer-card.warning {
+            border-color: rgba(243, 156, 18, 0.5);
+            background: rgba(243, 156, 18, 0.08);
+        }
+
+        .timer-card.danger {
+            border-color: rgba(231, 76, 60, 0.5);
+            background: rgba(231, 76, 60, 0.08);
+            animation: dangerPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes dangerPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+        }
+
+        .timer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .timer-emp-name { font-weight: 700; font-size: 1rem; }
+
+        .timer-emp-dept {
+            font-size: 0.72rem;
+            background: rgba(0, 153, 229, 0.2);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--primary-light);
+        }
+
+        .timer-purpose {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .timer-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .timer-countdown {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+        }
+
+        .timer-countdown.normal { color: var(--primary-light); }
+        .timer-countdown.warning { color: var(--warning); }
+        .timer-countdown.danger { color: var(--danger); }
+
+        .timer-bar-container {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .timer-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s linear, background 0.5s;
+            background: var(--primary);
+        }
+
+        .timer-bar.warning { background: var(--warning); }
+        .timer-bar.danger { background: var(--danger); }
+
+        .timer-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state .empty-img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state span { font-size: 0.8rem; opacity: 0.6; }
+
+        .history-panel { margin-bottom: 24px; }
+
+        .table-responsive { overflow-x: auto; padding: 0; }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .data-table thead { background: rgba(0, 153, 229, 0.15); }
+
+        .data-table th {
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--primary-light);
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr { transition: background 0.2s; }
+        .data-table tbody tr:hover { background: rgba(255, 255, 255, 0.05); }
+        .data-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+        .data-table tbody tr:nth-child(even):hover { background: rgba(255, 255, 255, 0.05); }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-ontime { background: rgba(46, 204, 113, 0.2); color: var(--success); }
+        .status-late { background: rgba(231, 76, 60, 0.2); color: var(--danger); }
+        .status-active { background: rgba(243, 156, 18, 0.2); color: var(--warning); }
+
+        .table-empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .table-empty i {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .table-empty p { font-size: 0.9rem; }
+        .empty-row td { border: none !important; }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: rgba(26, 39, 68, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            animation: toastIn 0.4s ease-out;
+            min-width: 300px;
+            max-width: 420px;
+        }
+
+        .toast.toast-out { animation: toastOut 0.3s ease-in forwards; }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(100px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(100px); }
+        }
+
+        .toast-icon { font-size: 1.3rem; flex-shrink: 0; }
+
+        .toast-success .toast-icon { color: var(--success); }
+        .toast-warning .toast-icon { color: var(--warning); }
+        .toast-danger .toast-icon { color: var(--danger); }
+        .toast-info .toast-icon { color: var(--primary-light); }
+
+        .toast-success { border-left: 4px solid var(--success); }
+        .toast-warning { border-left: 4px solid var(--warning); }
+        .toast-danger { border-left: 4px solid var(--danger); }
+        .toast-info { border-left: 4px solid var(--primary-light); }
+
+        .toast-content { flex: 1; }
+
+        .toast-title {
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .toast-message {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .toast-close:hover { color: white; }
+
+        @media (max-width: 1024px) {
+            .stats-section { grid-template-columns: repeat(2, 1fr); }
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            .header-left { flex-direction: column; }
+            .header-right { align-items: center; }
+            .header h1 { font-size: 1.4rem; }
+            .stats-section { grid-template-columns: repeat(2, 1fr); }
+            .form-row { grid-template-columns: 1fr; }
+            .panel-header { flex-direction: column; gap: 10px; }
+            .doraemon-fly img { width: 80px; height: 80px; }
+            .doraemon-float { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .main-container { padding: 10px; }
+            .stats-section { grid-template-columns: 1fr; }
+            .duration-selector { flex-wrap: wrap; }
+            .dur-btn { min-width: 50px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+        <div class="cloud cloud-5"></div>
+        <div class="star star-1"></div>
+        <div class="star star-2"></div>
+        <div class="star star-3"></div>
+        <div class="star star-4"></div>
+        <div class="star star-5"></div>
+        <div class="star star-6"></div>
+        <div class="star star-7"></div>
+        <div class="star star-8"></div>
+        <div class="doraemon-fly">
+            <img src="https://mgx-backend-cdn.metadl.com/generate/images/1093953/2026-04-06/37dfe994-62c0-4864-8116-acd35d61abeb.png" alt="Doraemon Flying">
+        </div>
+        <div class="doraemon-float">
+            <img src="https://mgx-backend-cdn.metadl.com/generate/images/1093953/2026-04-06/0688e987-2b34-45d6-ad72-22e507b5985f.png" alt="Doraemon Wave">
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <img src="https://mgx-backend-cdn.metadl.com/generate/images/1093953/2026-04-06/3e5a19e5-ba1a-4db5-87a3-00aefb5c19b5.png" alt="Doraemon Clock" class="header-mascot">
+                <div>
+                    <h1><i class="fas fa-door-open"></i> Sistem Izin Keluar</h1>
+                    <p class="subtitle">Monitoring Izin Toilet Karyawan</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="live-clock">
+                    <i class="fas fa-clock"></i>
+                    <span id="liveClock">00:00:00</span>
+                </div>
+                <div class="live-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="liveDate">-</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Cards -->
+        <section class="stats-section">
+            <div class="stat-card stat-total">
+                <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statTotal">0</span>
+                    <span class="stat-label">Total Izin Hari Ini</span>
+                </div>
+            </div>
+            <div class="stat-card stat-active">
+                <div class="stat-icon"><i class="fas fa-running"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statActive">0</span>
+                    <span class="stat-label">Sedang Izin</span>
+                </div>
+            </div>
+            <div class="stat-card stat-ontime">
+                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statOntime">0</span>
+                    <span class="stat-label">Tepat Waktu</span>
+                </div>
+            </div>
+            <div class="stat-card stat-late">
+                <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="statLate">0</span>
+                    <span class="stat-label">Terlambat</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <section class="content-grid">
+            <!-- Left: Form Panel -->
+            <div class="panel form-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-user-plus"></i> Buat Izin Baru</h2>
+                </div>
+                <div class="panel-body">
+                    <!-- Employee Selection -->
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Pilih Karyawan</label>
+                        <div class="search-select">
+                            <input type="text" id="employeeSearch" placeholder="Cari nama karyawan..." autocomplete="off">
+                            <div class="dropdown-list" id="employeeDropdown"></div>
+                        </div>
+                        <input type="hidden" id="selectedEmployeeId">
+                        <div class="selected-employee" id="selectedEmployeeDisplay" style="display:none;">
+                            <span id="selectedName"></span>
+                            <span id="selectedDept" class="dept-badge"></span>
+                            <button class="btn-clear" onclick="clearSelection()"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Add New Employee -->
+                    <div class="add-employee-toggle">
+                        <button class="btn-link" onclick="toggleAddEmployee()">
+                            <i class="fas fa-plus-circle"></i> Tambah Karyawan Baru
+                        </button>
+                    </div>
+                    <div class="add-employee-form" id="addEmployeeForm" style="display:none;">
+                        <div class="form-row">
+                            <input type="text" id="newEmployeeName" placeholder="Nama Karyawan">
+                            <select id="newEmployeeDept">
+                                <option value="">Pilih Departemen</option>
+                                <option value="Produksi">Produksi</option>
+                                <option value="Quality Control">Quality Control</option>
+                                <option value="Warehouse">Warehouse</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="HRD">HRD</option>
+                                <option value="Finance">Finance</option>
+                                <option value="IT">IT</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-secondary" onclick="addEmployee()">
+                            <i class="fas fa-save"></i> Simpan
+                        </button>
+                    </div>
+
+                    <!-- Purpose -->
+                    <div class="form-group">
+                        <label><i class="fas fa-toilet"></i> Keperluan</label>
+                        <select id="purpose">
+                            <option value="Izin Toilet">🚻 Izin Toilet</option>
+                            <option value="Izin Sholat">🕌 Izin Sholat</option>
+                            <option value="Izin Minum">🥤 Izin Minum</option>
+                            <option value="Izin Lainnya">📋 Izin Lainnya</option>
+                        </select>
+                    </div>
+
+                    <!-- Notes -->
+                    <div class="form-group">
+                        <label><i class="fas fa-sticky-note"></i> Keterangan (Opsional)</label>
+                        <input type="text" id="notes" placeholder="Tambahkan keterangan...">
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="form-group">
+                        <label><i class="fas fa-hourglass-half"></i> Durasi (Menit)</label>
+                        <div class="duration-selector">
+                            <button class="dur-btn active" data-dur="5">5</button>
+                            <button class="dur-btn" data-dur="10">10</button>
+                            <button class="dur-btn" data-dur="15">15</button>
+                            <button class="dur-btn" data-dur="20">20</button>
+                            <button class="dur-btn" data-dur="30">30</button>
+                        </div>
+                        <input type="hidden" id="duration" value="5">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button class="btn btn-primary btn-lg" id="btnStartTimer" onclick="startPermit()">
+                        <i class="fas fa-play-circle"></i> Mulai Timer Izin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Active Timers -->
+            <div class="panel timer-panel">
+                <div class="panel-header">
+                    <h2><i class="fas fa-stopwatch"></i> Timer Aktif</h2>
+                </div>
+                <div class="panel-body">
+                    <div id="activeTimers" class="active-timers">
+                        <div class="empty-state">
+                            <img src="https://mgx-backend-cdn.metadl.com/generate/images/1093953/2026-04-06/0688e987-2b34-45d6-ad72-22e507b5985f.png" alt="Doraemon" class="empty-img">
+                            <p>Belum ada timer aktif</p>
+                            <span>Buat izin baru untuk memulai timer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History Table -->
+        <section class="panel history-panel">
+            <div class="panel-header">
+                <h2><i class="fas fa-history"></i> Riwayat Izin Hari Ini</h2>
+                <div class="header-actions">
+                    <button class="btn btn-sm btn-outline" onclick="exportData()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="clearHistory()">
+                        <i class="fas fa-trash"></i> Hapus Semua
+                    </button>
+                </div>
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="data-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Karyawan</th>
+                            <th>Departemen</th>
+                            <th>Keperluan</th>
+                            <th>Waktu Keluar</th>
+                            <th>Waktu Kembali</th>
+                            <th>Durasi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr class="empty-row">
+                            <td colspan="8">
+                                <div class="table-empty">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>Belum ada riwayat izin hari ini</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🔔 Sistem Izin Keluar Karyawan &copy; 2026 | Powered by Doraemon Timer ⏱️</p>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ============================================
+        // SISTEM IZIN KELUAR KARYAWAN
+        // With localStorage Persistence
+        // ============================================
+
+        // --- STORAGE KEYS ---
+        var STORAGE_KEYS = {
+            employees: 'izinKeluar_employees',
+            activeTimers: 'izinKeluar_activeTimers',
+            history: 'izinKeluar_history',
+            nextId: 'izinKeluar_nextId',
+            nextPermitId: 'izinKeluar_nextPermitId',
+            savedDate: 'izinKeluar_savedDate'
+        };
+
+        // --- DEFAULT EMPLOYEES ---
+        var DEFAULT_EMPLOYEES = [
+            { id: 1, name: 'Ahmad Fauzi', dept: 'Produksi' },
+            { id: 2, name: 'Siti Nurhaliza', dept: 'Quality Control' },
+            { id: 3, name: 'Budi Santoso', dept: 'Warehouse' },
+            { id: 4, name: 'Dewi Lestari', dept: 'Engineering' },
+            { id: 5, name: 'Rizky Pratama', dept: 'HRD' },
+            { id: 6, name: 'Putri Ayu', dept: 'Finance' },
+            { id: 7, name: 'Hendra Wijaya', dept: 'IT' },
+            { id: 8, name: 'Rina Marlina', dept: 'Marketing' },
+            { id: 9, name: 'Agus Setiawan', dept: 'Produksi' },
+            { id: 10, name: 'Maya Sari', dept: 'Quality Control' },
+        ];
+
+        // --- DATA STORE ---
+        var AppState = {
+            employees: [],
+            activeTimers: [],
+            history: [],
+            nextId: 11,
+            nextPermitId: 1,
+        };
+
+        // --- LOCALSTORAGE HELPERS ---
+        function saveToStorage() {
+            try {
+                // Save employees
+                localStorage.setItem(STORAGE_KEYS.employees, JSON.stringify(AppState.employees));
+
+                // Save active timers - convert Date objects to ISO strings
+                var timersToSave = AppState.activeTimers.map(function(timer) {
+                    return {
+                        id: timer.id,
+                        empId: timer.empId,
+                        empName: timer.empName,
+                        empDept: timer.empDept,
+                        purpose: timer.purpose,
+                        notes: timer.notes,
+                        durationMinutes: timer.durationMinutes,
+                        totalSeconds: timer.totalSeconds,
+                        remainingSeconds: timer.remainingSeconds,
+                        startTime: timer.startTime.toISOString(),
+                        startTimeStr: timer.startTimeStr,
+                        endTime: timer.endTime ? timer.endTime.toISOString() : null,
+                        status: timer.status,
+                    };
+                });
+                localStorage.setItem(STORAGE_KEYS.activeTimers, JSON.stringify(timersToSave));
+
+                // Save history
+                localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(AppState.history));
+
+                // Save counters
+                localStorage.setItem(STORAGE_KEYS.nextId, JSON.stringify(AppState.nextId));
+                localStorage.setItem(STORAGE_KEYS.nextPermitId, JSON.stringify(AppState.nextPermitId));
+
+                // Save today's date to detect day change
+                localStorage.setItem(STORAGE_KEYS.savedDate, new Date().toISOString().slice(0, 10));
+            } catch (e) {
+                console.warn('Failed to save to localStorage:', e);
+            }
+        }
+
+        function loadFromStorage() {
+            try {
+                // Check if saved date is today - if not, clear daily data (history & active timers)
+                var savedDate = localStorage.getItem(STORAGE_KEYS.savedDate);
+                var today = new Date().toISOString().slice(0, 10);
+                var isNewDay = savedDate !== today;
+
+                // Load employees (always persist, even across days)
+                var savedEmployees = localStorage.getItem(STORAGE_KEYS.employees);
+                if (savedEmployees) {
+                    AppState.employees = JSON.parse(savedEmployees);
+                } else {
+                    AppState.employees = JSON.parse(JSON.stringify(DEFAULT_EMPLOYEES));
+                }
+
+                // Load counters
+                var savedNextId = localStorage.getItem(STORAGE_KEYS.nextId);
+                if (savedNextId) {
+                    AppState.nextId = JSON.parse(savedNextId);
+                }
+
+                var savedNextPermitId = localStorage.getItem(STORAGE_KEYS.nextPermitId);
+                if (savedNextPermitId) {
+                    AppState.nextPermitId = JSON.parse(savedNextPermitId);
+                }
+
+                if (isNewDay) {
+                    // New day: clear daily data
+                    AppState.activeTimers = [];
+                    AppState.history = [];
+                    AppState.nextPermitId = 1;
+                    saveToStorage();
+                    return;
+                }
+
+                // Load active timers - reconstruct Date objects and recalculate remaining time
+                var savedTimers = localStorage.getItem(STORAGE_KEYS.activeTimers);
+                if (savedTimers) {
+                    var parsedTimers = JSON.parse(savedTimers);
+                    var now = new Date();
+                    AppState.activeTimers = parsedTimers.map(function(timer) {
+                        var startTime = new Date(timer.startTime);
+                        var elapsedSeconds = Math.floor((now - startTime) / 1000);
+                        var remainingSeconds = timer.totalSeconds - elapsedSeconds;
+
+                        return {
+                            id: timer.id,
+                            empId: timer.empId,
+                            empName: timer.empName,
+                            empDept: timer.empDept,
+                            purpose: timer.purpose,
+                            notes: timer.notes,
+                            durationMinutes: timer.durationMinutes,
+                            totalSeconds: timer.totalSeconds,
+                            remainingSeconds: remainingSeconds,
+                            startTime: startTime,
+                            startTimeStr: timer.startTimeStr,
+                            endTime: timer.endTime ? new Date(timer.endTime) : null,
+                            status: timer.status,
+                        };
+                    });
+                }
+
+                // Load history
+                var savedHistory = localStorage.getItem(STORAGE_KEYS.history);
+                if (savedHistory) {
+                    AppState.history = JSON.parse(savedHistory);
+                }
+            } catch (e) {
+                console.warn('Failed to load from localStorage:', e);
+                // Reset to defaults on error
+                AppState.employees = JSON.parse(JSON.stringify(DEFAULT_EMPLOYEES));
+                AppState.activeTimers = [];
+                AppState.history = [];
+                AppState.nextId = 11;
+                AppState.nextPermitId = 1;
+            }
+        }
+
+        // --- CLOCK ---
+        function updateClock() {
+            var now = new Date();
+            var timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            var dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('liveClock').textContent = timeStr;
+            document.getElementById('liveDate').textContent = dateStr;
+        }
+
+        // --- EMPLOYEE SEARCH & SELECT ---
+        var searchInput = document.getElementById('employeeSearch');
+        var dropdown = document.getElementById('employeeDropdown');
+
+        function renderDropdown(filter) {
+            filter = filter || '';
+            var filtered = AppState.employees.filter(function(emp) {
+                return emp.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    emp.dept.toLowerCase().includes(filter.toLowerCase());
+            });
+            if (filtered.length === 0) {
+                dropdown.innerHTML = '<div class="dropdown-item" style="color:rgba(255,255,255,0.4);cursor:default;">Tidak ditemukan</div>';
+            } else {
+                dropdown.innerHTML = filtered.map(function(emp) {
+                    return '<div class="dropdown-item" data-id="' + emp.id + '">' +
+                        '<span class="emp-name">' + emp.name + '</span>' +
+                        '<span class="emp-dept">' + emp.dept + '</span>' +
+                        '</div>';
+                }).join('');
+            }
+            dropdown.classList.add('show');
+        }
+
+        searchInput.addEventListener('focus', function() { renderDropdown(searchInput.value); });
+        searchInput.addEventListener('input', function() { renderDropdown(searchInput.value); });
+
+        dropdown.addEventListener('click', function(e) {
+            var item = e.target.closest('.dropdown-item');
+            if (!item || !item.dataset.id) return;
+            var emp = AppState.employees.find(function(em) { return em.id === parseInt(item.dataset.id); });
+            if (emp) selectEmployee(emp);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-select')) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function selectEmployee(emp) {
+            document.getElementById('selectedEmployeeId').value = emp.id;
+            document.getElementById('selectedName').textContent = emp.name;
+            document.getElementById('selectedDept').textContent = emp.dept;
+            document.getElementById('selectedEmployeeDisplay').style.display = 'flex';
+            searchInput.style.display = 'none';
+            dropdown.classList.remove('show');
+        }
+
+        function clearSelection() {
+            document.getElementById('selectedEmployeeId').value = '';
+            document.getElementById('selectedEmployeeDisplay').style.display = 'none';
+            searchInput.style.display = 'block';
+            searchInput.value = '';
+        }
+
+        // --- ADD EMPLOYEE ---
+        function toggleAddEmployee() {
+            var form = document.getElementById('addEmployeeForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addEmployee() {
+            var name = document.getElementById('newEmployeeName').value.trim();
+            var dept = document.getElementById('newEmployeeDept').value;
+            if (!name) { showToast('warning', 'Peringatan', 'Nama karyawan harus diisi!'); return; }
+            if (!dept) { showToast('warning', 'Peringatan', 'Departemen harus dipilih!'); return; }
+
+            var emp = { id: AppState.nextId++, name: name, dept: dept };
+            AppState.employees.push(emp);
+            document.getElementById('newEmployeeName').value = '';
+            document.getElementById('newEmployeeDept').value = '';
+            document.getElementById('addEmployeeForm').style.display = 'none';
+            saveToStorage();
+            showToast('success', 'Berhasil', 'Karyawan "' + name + '" berhasil ditambahkan!');
+        }
+
+        // --- DURATION SELECTOR ---
+        document.querySelectorAll('.dur-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.dur-btn').forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                document.getElementById('duration').value = btn.dataset.dur;
+            });
+        });
+
+        // --- START PERMIT ---
+        function startPermit() {
+            var empId = document.getElementById('selectedEmployeeId').value;
+            if (!empId) { showToast('warning', 'Peringatan', 'Pilih karyawan terlebih dahulu!'); return; }
+
+            var emp = AppState.employees.find(function(e) { return e.id === parseInt(empId); });
+            if (!emp) return;
+
+            // Check if employee already has active timer
+            var alreadyActive = AppState.activeTimers.find(function(t) { return t.empId === emp.id; });
+            if (alreadyActive) {
+                showToast('warning', 'Peringatan', emp.name + ' masih memiliki izin aktif!');
+                return;
+            }
+
+            var purpose = document.getElementById('purpose').value;
+            var notes = document.getElementById('notes').value.trim();
+            var duration = parseInt(document.getElementById('duration').value);
+            var now = new Date();
+
+            var permit = {
+                id: AppState.nextPermitId++,
+                empId: emp.id,
+                empName: emp.name,
+                empDept: emp.dept,
+                purpose: purpose,
+                notes: notes,
+                durationMinutes: duration,
+                totalSeconds: duration * 60,
+                remainingSeconds: duration * 60,
+                startTime: now,
+                startTimeStr: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                endTime: null,
+                status: 'active',
+            };
+
+            AppState.activeTimers.push(permit);
+            clearSelection();
+            document.getElementById('notes').value = '';
+            updateStats();
+            renderActiveTimers();
+            saveToStorage();
+            showToast('info', 'Timer Dimulai', emp.name + ' - ' + purpose + ' (' + duration + ' menit)');
+        }
+
+        // --- RENDER ACTIVE TIMERS ---
+        function renderActiveTimers() {
+            var container = document.getElementById('activeTimers');
+            if (AppState.activeTimers.length === 0) {
+                container.innerHTML =
+                    '<div class="empty-state">' +
+                    '<img src="https://mgx-backend-cdn.metadl.com/generate/images/1093953/2026-04-06/0688e987-2b34-45d6-ad72-22e507b5985f.png" alt="Doraemon" class="empty-img">' +
+                    '<p>Belum ada timer aktif</p>' +
+                    '<span>Buat izin baru untuk memulai timer</span>' +
+                    '</div>';
+                return;
+            }
+
+            container.innerHTML = AppState.activeTimers.map(function(timer) {
+                var percent = ((timer.totalSeconds - timer.remainingSeconds) / timer.totalSeconds) * 100;
+                var minutes = Math.floor(Math.abs(timer.remainingSeconds) / 60);
+                var seconds = Math.abs(timer.remainingSeconds) % 60;
+                var isOvertime = timer.remainingSeconds < 0;
+                var isWarning = !isOvertime && timer.remainingSeconds <= 120 && timer.remainingSeconds > 0;
+                var statusClass = isOvertime ? 'danger' : isWarning ? 'warning' : 'normal';
+                var sign = isOvertime ? '-' : '';
+
+                return '<div class="timer-card ' + statusClass + '">' +
+                    '<div class="timer-top">' +
+                    '<span class="timer-emp-name">' + timer.empName + '</span>' +
+                    '<span class="timer-emp-dept">' + timer.empDept + '</span>' +
+                    '</div>' +
+                    '<div class="timer-purpose">' +
+                    timer.purpose + (timer.notes ? ' - ' + timer.notes : '') + ' | Keluar: ' + timer.startTimeStr +
+                    '</div>' +
+                    '<div class="timer-display">' +
+                    '<span class="timer-countdown ' + statusClass + '">' +
+                    sign + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0') +
+                    '</span>' +
+                    '<div class="timer-bar-container">' +
+                    '<div class="timer-bar ' + statusClass + '" style="width: ' + Math.min(percent, 100) + '%"></div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="timer-actions">' +
+                    '<button class="btn btn-success-action" onclick="endPermit(' + timer.id + ')">' +
+                    '<i class="fas fa-check"></i> Kembali' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        // --- END PERMIT ---
+        function endPermit(permitId) {
+            var idx = AppState.activeTimers.findIndex(function(t) { return t.id === permitId; });
+            if (idx === -1) return;
+
+            var timer = AppState.activeTimers[idx];
+            var now = new Date();
+            var elapsed = Math.floor((now - timer.startTime) / 1000);
+            var elapsedMin = Math.floor(elapsed / 60);
+            var elapsedSec = elapsed % 60;
+            var isLate = elapsed > timer.totalSeconds;
+
+            var record = {
+                id: timer.id,
+                empName: timer.empName,
+                empDept: timer.empDept,
+                purpose: timer.purpose,
+                startTimeStr: timer.startTimeStr,
+                endTimeStr: now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+                durationStr: String(elapsedMin).padStart(2, '0') + ':' + String(elapsedSec).padStart(2, '0'),
+                status: isLate ? 'late' : 'ontime',
+            };
+
+            AppState.history.unshift(record);
+            AppState.activeTimers.splice(idx, 1);
+
+            updateStats();
+            renderActiveTimers();
+            renderHistory();
+            saveToStorage();
+
+            if (isLate) {
+                showToast('danger', 'Terlambat!', timer.empName + ' kembali melebihi batas waktu.');
+            } else {
+                showToast('success', 'Tepat Waktu', timer.empName + ' kembali tepat waktu!');
+            }
+        }
+
+        // --- TIMER TICK ---
+        var saveCounter = 0;
+        function timerTick() {
+            var needsAlert = false;
+            AppState.activeTimers.forEach(function(timer) {
+                timer.remainingSeconds--;
+                if (timer.remainingSeconds === 0) {
+                    needsAlert = true;
+                    showToast('danger', '⏰ Waktu Habis!', timer.empName + ' sudah melewati batas waktu izin!');
+                }
+            });
+
+            if (needsAlert) {
+                playAlertSound();
+            }
+
+            renderActiveTimers();
+            updateStats();
+
+            // Save to localStorage every 5 seconds to reduce write frequency
+            saveCounter++;
+            if (saveCounter >= 5) {
+                saveCounter = 0;
+                if (AppState.activeTimers.length > 0) {
+                    saveToStorage();
+                }
+            }
+        }
+
+        // --- RENDER HISTORY ---
+        function renderHistory() {
+            var tbody = document.getElementById('historyBody');
+            if (AppState.history.length === 0) {
+                tbody.innerHTML =
+                    '<tr class="empty-row">' +
+                    '<td colspan="8">' +
+                    '<div class="table-empty">' +
+                    '<i class="fas fa-inbox"></i>' +
+                    '<p>Belum ada riwayat izin hari ini</p>' +
+                    '</div>' +
+                    '</td>' +
+                    '</tr>';
+                return;
+            }
+
+            tbody.innerHTML = AppState.history.map(function(rec, i) {
+                var statusBadge = rec.status === 'ontime'
+                    ? '<span class="status-badge status-ontime"><i class="fas fa-check-circle"></i> Tepat Waktu</span>'
+                    : '<span class="status-badge status-late"><i class="fas fa-exclamation-circle"></i> Terlambat</span>';
+
+                return '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td><strong>' + rec.empName + '</strong></td>' +
+                    '<td><span class="dept-badge">' + rec.empDept + '</span></td>' +
+                    '<td>' + rec.purpose + '</td>' +
+                    '<td>' + rec.startTimeStr + '</td>' +
+                    '<td>' + rec.endTimeStr + '</td>' +
+                    '<td>' + rec.durationStr + '</td>' +
+                    '<td>' + statusBadge + '</td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        // --- UPDATE STATS ---
+        function updateStats() {
+            var total = AppState.history.length + AppState.activeTimers.length;
+            var active = AppState.activeTimers.length;
+            var ontime = AppState.history.filter(function(r) { return r.status === 'ontime'; }).length;
+            var late = AppState.history.filter(function(r) { return r.status === 'late'; }).length;
+
+            animateNumber('statTotal', total);
+            animateNumber('statActive', active);
+            animateNumber('statOntime', ontime);
+            animateNumber('statLate', late);
+        }
+
+        function animateNumber(elementId, target) {
+            var el = document.getElementById(elementId);
+            var current = parseInt(el.textContent) || 0;
+            if (current === target) return;
+            el.textContent = target;
+            el.style.transform = 'scale(1.3)';
+            setTimeout(function() { el.style.transition = 'transform 0.3s'; el.style.transform = 'scale(1)'; }, 50);
+        }
+
+        // --- TOAST NOTIFICATIONS ---
+        function showToast(type, title, message) {
+            var container = document.getElementById('toastContainer');
+            var icons = {
+                success: 'fas fa-check-circle',
+                warning: 'fas fa-exclamation-triangle',
+                danger: 'fas fa-times-circle',
+                info: 'fas fa-info-circle',
+            };
+
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-' + type;
+            toast.innerHTML =
+                '<div class="toast-icon"><i class="' + icons[type] + '"></i></div>' +
+                '<div class="toast-content">' +
+                '<div class="toast-title">' + title + '</div>' +
+                '<div class="toast-message">' + message + '</div>' +
+                '</div>' +
+                '<button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>';
+
+            container.appendChild(toast);
+            setTimeout(function() {
+                toast.classList.add('toast-out');
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 4000);
+        }
+
+        // --- ALERT SOUND ---
+        function playAlertSound() {
+            try {
+                var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                var oscillator = audioCtx.createOscillator();
+                var gainNode = audioCtx.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                gainNode.gain.value = 0.3;
+                oscillator.start();
+                setTimeout(function() {
+                    oscillator.frequency.value = 1000;
+                    setTimeout(function() {
+                        oscillator.frequency.value = 800;
+                        setTimeout(function() {
+                            oscillator.stop();
+                            audioCtx.close();
+                        }, 200);
+                    }, 200);
+                }, 200);
+            } catch (e) {
+                // Audio not supported
+            }
+        }
+
+        // --- EXPORT DATA ---
+        function exportData() {
+            if (AppState.history.length === 0) {
+                showToast('warning', 'Peringatan', 'Tidak ada data untuk di-export!');
+                return;
+            }
+
+            var csv = 'No,Nama Karyawan,Departemen,Keperluan,Waktu Keluar,Waktu Kembali,Durasi,Status\n';
+            AppState.history.forEach(function(rec, i) {
+                csv += (i + 1) + ',"' + rec.empName + '","' + rec.empDept + '","' + rec.purpose + '","' + rec.startTimeStr + '","' + rec.endTimeStr + '","' + rec.durationStr + '","' + (rec.status === 'ontime' ? 'Tepat Waktu' : 'Terlambat') + '"\n';
+            });
+
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'izin_keluar_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.click();
+            showToast('success', 'Export Berhasil', 'Data berhasil di-export ke CSV!');
+        }
+
+        // --- CLEAR HISTORY ---
+        function clearHistory() {
+            if (AppState.history.length === 0) {
+                showToast('warning', 'Peringatan', 'Tidak ada riwayat untuk dihapus!');
+                return;
+            }
+            if (confirm('Apakah Anda yakin ingin menghapus semua riwayat?')) {
+                AppState.history = [];
+                renderHistory();
+                updateStats();
+                saveToStorage();
+                showToast('info', 'Dihapus', 'Semua riwayat izin telah dihapus.');
+            }
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved data from localStorage
+            loadFromStorage();
+
+            updateClock();
+            setInterval(updateClock, 1000);
+            setInterval(timerTick, 1000);
+            updateStats();
+            renderHistory();
+            renderActiveTimers();
+        });
+    </script>
+</body>
+
+</html>
